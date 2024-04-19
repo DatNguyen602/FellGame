@@ -1,21 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rd;
     private Animator at;
 
+    [SerializeField] private Image healthBar;
+
     private float _speed = 3.0f;
-    private float _health, _maxHealth;
+    private float _health, _maxHealth = 10.0f;
+    private float timeInt, tMaxInt = 2.0f;
     private float _jumpPower = 4.5f;
     private bool isJump;
     private Vector3 dirLook;
     private Vector3 dirMove;
     public bool isMobile{get; set;}
+    private bool isSlip;
     public void setDirMove(float x){
         this.dirMove = new Vector3(x, 0, 0);
+    }
+    public bool isDie{
+        get{
+            return this._health <= 0;
+        }
     }
 
     private float timeSlip, tSlipMax = 0.5f;
@@ -27,9 +37,14 @@ public class Player : MonoBehaviour
         timeSlip = 0;
         dirLook = Vector3.right;
         isMobile = false;
+        isSlip = false;
+        _health = _maxHealth;
+        timeInt = 0;
+        healthBar.fillAmount = _health / _maxHealth;
     }
 
     void Update() {
+        if(timeInt > 0) timeInt -= Time.deltaTime;
         if(!isMobile) dirMove = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
         if(transform.localScale.x * dirMove.x < 0) {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
@@ -44,7 +59,6 @@ public class Player : MonoBehaviour
         }
         if(Input.GetKeyDown("space")){
             this.Jump();
-            at.SetBool("isJump", true);
         }
         if(Input.GetKeyDown("f")){
             this.Slip();
@@ -56,6 +70,11 @@ public class Player : MonoBehaviour
         else if(rd.velocity.y < 0){
             at.SetInteger("state", -1);
         }
+
+        if(timeSlip > 0) at.SetInteger("state", 3);
+
+        at.SetBool("isJump", isJump);
+        at.SetBool("isSlip", isSlip);
      }
 
     void FixedUpdate() {
@@ -65,6 +84,7 @@ public class Player : MonoBehaviour
         }
         else{
             timeSlip = 0;
+            isSlip = false;
             at.SetBool("isJump", false);
             rd.gravityScale = 1;
             transform.position += dirMove * _speed * Time.fixedDeltaTime;
@@ -83,8 +103,7 @@ public class Player : MonoBehaviour
             rd.velocity = new Vector3(0,0,0);
             rd.gravityScale = 0;
             timeSlip = tSlipMax;
-            at.SetBool("isJump", true);
-            at.SetInteger("state", 3);
+            isSlip = true;
         }
     }
 
@@ -94,11 +113,18 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void hit(float dame){
+        if(timeInt > 0) return;
+        timeInt = tMaxInt;
+        _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
+        healthBar.fillAmount = _health / _maxHealth;
+        at.SetTrigger("hit");
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if(other != null){
             if(other.gameObject.tag == "Ground"){
                 isJump = false;
-                at.SetBool("isJump", false);
             }
         }
     }
