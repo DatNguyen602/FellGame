@@ -6,20 +6,18 @@ using UnityEngine.SceneManagement;
 
 public class EventStart : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
     }
 
     public void btnStartClick(){
-        SceneManager.LoadScene("PlayScence");
+        SceneManager.LoadScene("PlayScence1");
     }
 
     public void btnQuitClick(){

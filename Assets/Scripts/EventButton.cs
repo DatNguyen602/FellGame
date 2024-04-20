@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class EventButton : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject desappearing;
     [SerializeField] private GameObject UIPlay;
     [SerializeField] private GameObject UIPause;
     [SerializeField] private GameObject UISetting;
@@ -19,16 +20,23 @@ public class EventButton : MonoBehaviour
 
     void Start()
     {
-        PlayerCtrl = player.GetComponent<Player>();
+        if(player != null) PlayerCtrl = player.GetComponent<Player>();
         audioValue = 25;
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
     }
 
     void Update()
     {
-        if(PlayerCtrl.isDie){
-            SceneManager.LoadScene("StartScence");
+        if(player != null && PlayerCtrl.isDie){
+            Instantiate(desappearing,player.transform.position,Quaternion.identity);
+            if(player != null) Destroy(player);
+            Invoke("LoadStartScene",2);
         }
+    }
+
+    void LoadStartScene()
+    {
+        SceneManager.LoadScene("StartScence");
     }
 
     public void btnLeftDown(){

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -9,12 +10,25 @@ public class Player : MonoBehaviour
     private Animator at;
 
     [SerializeField] private Image healthBar;
+    [SerializeField] private TextMeshProUGUI pointText;
 
     private float _speed = 3.0f;
     private float _health, _maxHealth = 10.0f;
+    private float point;
+    public float addPoint{
+        get{
+            return point;
+        }
+        set{
+            if(value >= 0){
+                point += value;
+                pointText.text = point.ToString("F1");
+            }
+        }
+    }
     private float timeInt, tMaxInt = 2.0f;
     private float _jumpPower = 4.5f;
-    private bool isJump;
+    private bool isJump, isDoubleJump;
     private Vector3 dirLook;
     private Vector3 dirMove;
     public bool isMobile{get; set;}
@@ -27,11 +41,18 @@ public class Player : MonoBehaviour
             return this._health <= 0;
         }
     }
+    public bool isFullHealth{
+        get{
+            return this._health == this._maxHealth;
+        }
+    }
 
     private float timeSlip, tSlipMax = 0.5f;
 
     void Start() {
+        point = 0;
         isJump = false;
+        isDoubleJump = false;
         rd = GetComponent<Rigidbody2D>();
         at = GetComponent<Animator>();
         timeSlip = 0;
@@ -66,6 +87,7 @@ public class Player : MonoBehaviour
 
         if(rd.velocity.y > 0){
             at.SetInteger("state", 1);
+            if(isDoubleJump) at.SetInteger("state",4);
         }
         else if(rd.velocity.y < 0){
             at.SetInteger("state", -1);
@@ -92,8 +114,11 @@ public class Player : MonoBehaviour
     }
 
     public void Jump(){
-        if(!isJump){
+        if(!isJump || !isDoubleJump){
             rd.AddForce(Vector3.up * _jumpPower, ForceMode2D.Impulse);
+            if(isJump) {
+                isDoubleJump = true;
+            }
             isJump = true;
         }
     }
@@ -118,6 +143,7 @@ public class Player : MonoBehaviour
         timeInt = tMaxInt;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
         healthBar.fillAmount = _health / _maxHealth;
+        Debug.Log(_health + " / " + _maxHealth);
         at.SetTrigger("hit");
     }
 
@@ -125,6 +151,7 @@ public class Player : MonoBehaviour
         if(other != null){
             if(other.gameObject.tag == "Ground"){
                 isJump = false;
+                isDoubleJump = false;
             }
         }
     }

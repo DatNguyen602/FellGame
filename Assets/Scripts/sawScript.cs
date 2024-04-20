@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class sawScript : MonoBehaviour
 {
-    private float dame = -1.5f;
+    private float dame = -5f;
     private float speed = 2.5f, tChange = 2.0f, time;
     private int dirMove = 1;
     [SerializeField] private bool isVertical = true;
