@@ -14,6 +14,8 @@ public class EventButton : MonoBehaviour
     [SerializeField] private GameObject UISetting;
     [SerializeField] private GameObject AudioSlider;
     [SerializeField] private TextMeshProUGUI AudioText;
+    [SerializeField] private TextMeshProUGUI HealthPointText;
+    [SerializeField] private GameObject CameraUI;
 
     private Player PlayerCtrl;
     private float audioValue;
@@ -29,9 +31,13 @@ public class EventButton : MonoBehaviour
     {
         if(player != null && PlayerCtrl.isDie){
             Instantiate(desappearing,player.transform.position,Quaternion.identity);
-            if(player != null) Destroy(player);
+            if(CameraUI != null){
+                CameraUI.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
+            }
+            Destroy(player);
             Invoke("LoadStartScene",2);
         }
+        if(player != null) HealthPointText.text = PlayerCtrl.getHealth.ToString("F2");
     }
 
     void LoadStartScene()

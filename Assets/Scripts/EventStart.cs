@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class EventStart : MonoBehaviour
 {
+    void Awake(){
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    }
+
     void Start()
     {
         

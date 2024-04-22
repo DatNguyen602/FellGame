@@ -5,7 +5,7 @@ using UnityEngine;
 public class sawScript : MonoBehaviour
 {
     private float dame = -5f;
-    private float speed = 2.5f, tChange = 2.0f, time;
+    private float speed = 3.0f, tChange = 2.0f, time;
     private int dirMove = 1;
     [SerializeField] private bool isVertical = true;
     [SerializeField] private GameObject chain;
@@ -23,9 +23,9 @@ public class sawScript : MonoBehaviour
         Debug.DrawRay(transform.position, Vector3.back * 5.0f, Color.red);
         if (hit.collider != null && hit.collider.gameObject.name != "Chain") {
             dirMove *= -1;
+            transform.position += (isVertical ? Vector3.up : Vector3.right) * speed * 0.1f * dirMove;
         }
-        Vector3 dir = isVertical ? Vector3.up : Vector3.right;
-        transform.position += dir * speed * Time.deltaTime * dirMove;
+        transform.position += (isVertical ? Vector3.up : Vector3.right) * speed * Time.deltaTime * dirMove;
 
         // time -= Time.deltaTime;
         // if(time > 0){

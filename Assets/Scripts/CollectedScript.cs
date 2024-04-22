@@ -8,7 +8,7 @@ public class CollectedScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("create a collected");
     }
 
     // Update is called once per frame

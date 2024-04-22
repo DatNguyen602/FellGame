@@ -36,6 +36,11 @@ public class Player : MonoBehaviour
     public void setDirMove(float x){
         this.dirMove = new Vector3(x, 0, 0);
     }
+    public float getHealth{
+        get{
+            return this._health;
+        }
+    }
     public bool isDie{
         get{
             return this._health <= 0;
@@ -139,8 +144,17 @@ public class Player : MonoBehaviour
     }
 
     public void hit(float dame){
+        if(dame == 0) return;
         if(timeInt > 0) return;
         timeInt = tMaxInt;
+        _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
+        healthBar.fillAmount = _health / _maxHealth;
+        Debug.Log(_health + " / " + _maxHealth);
+        at.SetTrigger("hit");
+    }
+
+    public void bomHit(float dame){
+        if(dame == 0) return;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
         healthBar.fillAmount = _health / _maxHealth;
         Debug.Log(_health + " / " + _maxHealth);
