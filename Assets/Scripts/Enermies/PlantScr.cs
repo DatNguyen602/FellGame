@@ -23,7 +23,7 @@ public class PlantScr : MonoBehaviour
     void Update()
     {
         if(timeBL > 0) timeBL -= Time.deltaTime;
-        Debug.DrawRay(transform.position + dirLook * startPoint, dirLook * deepRaycast, Color.red);
+        // Debug.DrawRay(transform.position + dirLook * startPoint, dirLook * deepRaycast, Color.red);
         if(timeBL <= 0){
             RaycastHit2D hit = Physics2D.Raycast(transform.position + dirLook * startPoint, dirLook, deepRaycast, 1 << 3);
             if (hit.collider != null) {

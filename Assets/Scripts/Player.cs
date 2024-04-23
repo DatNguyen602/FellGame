@@ -36,22 +36,9 @@ public class Player : MonoBehaviour
     public void setDirMove(float x){
         this.dirMove = new Vector3(x, 0, 0);
     }
-    public float getHealth{
-        get{
-            return this._health;
-        }
-    }
-    public bool isDie{
-        get{
-            return this._health <= 0;
-        }
-    }
-    public bool isFullHealth{
-        get{
-            return this._health == this._maxHealth;
-        }
-    }
-
+    public float getHealth => this._health;
+    public bool isDie => this._health <= 0;
+    public bool isFullHealth => this._health == this._maxHealth;
     private float timeSlip, tSlipMax = 0.5f;
 
     void Start() {
