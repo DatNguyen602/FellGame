@@ -40,6 +40,6 @@ public class PlantScr : MonoBehaviour
 
     void attack(){
         GameObject bl = Instantiate(bullet, transform.position + dirLook * startPoint, Quaternion.identity);
-        bl.GetComponent<Rigidbody2D>().AddForce(dirLook * 5.0f, ForceMode2D.Impulse);
+        bl?.GetComponent<Rigidbody2D>().AddForce(dirLook * 5.0f, ForceMode2D.Impulse);
     }
 }
