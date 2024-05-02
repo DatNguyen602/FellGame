@@ -8,7 +8,7 @@ public class MushRoomScr : MonoBehaviour
     private Animator at;
     private const float deepRaycast = 2.0f, startPoint = 0.4f;
     private const float dame = -1.0f;
-    private float speed;
+    // private float speed;
     private bool isHit;
 
     private Vector3 firstPosition;
@@ -20,7 +20,7 @@ public class MushRoomScr : MonoBehaviour
         dirLook = Vector3.left;
         dirMove = new Vector3(0, 0, 0);
         firstPosition = transform.position;
-        speed = 0;
+        // speed = 0;
         isHit = false;
     }
 

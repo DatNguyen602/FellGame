@@ -6,9 +6,7 @@ public class CollectedScript : MonoBehaviour
 {
     [SerializeField] private float time = 0.3f;
     
-    void Start()
-    {
-        Debug.Log("create a collected");
+    void Start() {
     }
 
     // Update is called once per frame

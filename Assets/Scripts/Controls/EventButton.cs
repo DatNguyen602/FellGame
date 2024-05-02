@@ -16,6 +16,7 @@ public class EventButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI AudioText;
     [SerializeField] private TextMeshProUGUI HealthPointText;
     [SerializeField] private GameObject CameraUI;
+    [SerializeField] private AudioSource BgAudio;
 
     private Player PlayerCtrl;
     private float audioValue;
@@ -25,6 +26,7 @@ public class EventButton : MonoBehaviour
         if(player != null) PlayerCtrl = player.GetComponent<Player>();
         audioValue = 25;
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
+        BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
     }
 
     void Update()
@@ -100,6 +102,7 @@ public class EventButton : MonoBehaviour
     public void sliderAudioChange(){
         if (AudioSlider != null) {
             audioValue = AudioSlider.GetComponent<Slider>().value * 100;
+            BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
             AudioText.text = ((int)audioValue).ToString();
         } else {
             Debug.Log("AudioSlider is null");

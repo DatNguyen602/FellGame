@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Image healthBar;
     [SerializeField] private TextMeshProUGUI pointText;
     [SerializeField] private ParticleSystem particleRun;
+    private AudioSource jumpSound;
 
     private float _speed = 3.0f;
     private float _health, _maxHealth = 10.0f;
@@ -48,6 +49,8 @@ public class Player : MonoBehaviour
         isDoubleJump = false;
         rd = GetComponent<Rigidbody2D>();
         at = GetComponent<Animator>();
+        jumpSound = GetComponent<AudioSource>();
+        jumpSound.Stop();
         if(particleRun != null) particleRun.Stop();
         timeSlip = 0;
         dirLook = Vector3.right;
@@ -59,9 +62,10 @@ public class Player : MonoBehaviour
     }
 
     void Update() {
+        float Horizontal = keyHorizontal();
         if(timeInt > 0) timeInt -= Time.deltaTime;
-        if(Input.GetAxis("Horizontal") != 0 && dirMove.x == 0 && particleRun != null) particleRun.Play();
-        if(!isMobile) dirMove = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        if(Horizontal != 0 && dirMove.x == 0 && particleRun != null) particleRun.Play();
+        if(!isMobile) dirMove = new Vector3(Horizontal, 0, 0);
         if(transform.localScale.x * dirMove.x < 0) {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
@@ -74,15 +78,6 @@ public class Player : MonoBehaviour
             at.SetInteger("state", 0);
             if(particleRun != null) particleRun.Stop();
         }
-
-        // RaycastHit2D hit = Physics2D.Raycast(transform.position + Vector3.down * 0.41f, Vector3.down, 0.01f);
-        // Debug.DrawRay(transform.position + Vector3.down * 0.41f, Vector3.down * 0.01f, Color.red);
-        // if (hit.collider != null && hit.collider.gameObject.tag == "Ground") {
-        //     Debug.Log(hit.collider.gameObject.name);
-        //     isJump = false;
-        //     isDoubleJump = false;
-        // }
-        // else Debug.Log("null");
 
         if(Input.GetKeyDown("space")){
             this.Jump();
@@ -119,10 +114,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    private int keyHorizontal(){
+        if(Input.GetKey("d")) return 1;
+        else if(Input.GetKey("a")) return -1;
+        else return 0;
+    }
+
     public void Jump(){
         if(!isJump || !isDoubleJump){
             rd.velocity = new Vector3(0,0,0);
             rd.AddForce(Vector3.up * _jumpPower, ForceMode2D.Impulse);
+            jumpSound.Play();
             if(isJump) {
                 isDoubleJump = true;
                 return;
@@ -152,7 +154,7 @@ public class Player : MonoBehaviour
         timeInt = tMaxInt;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
         healthBar.fillAmount = _health / _maxHealth;
-        Debug.Log(_health + " / " + _maxHealth);
+        // Debug.Log(_health + " / " + _maxHealth);
         at.SetTrigger("hit");
     }
 
@@ -160,14 +162,14 @@ public class Player : MonoBehaviour
         if(dame == 0) return;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
         healthBar.fillAmount = _health / _maxHealth;
-        Debug.Log(_health + " / " + _maxHealth);
+        // Debug.Log(_health + " / " + _maxHealth);
         at.SetTrigger("hit");
     }
 
     private void OnTriggerStay2D(Collider2D other) {
         if(other != null){
             if(other.gameObject.tag == "Ground"){
-                Debug.Log("In ground!");
+                // Debug.Log("In ground!");
                 isJump = false;
                 isDoubleJump = false;
             }

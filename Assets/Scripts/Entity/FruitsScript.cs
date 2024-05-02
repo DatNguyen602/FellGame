@@ -23,9 +23,9 @@ public class FruitsScript : MonoBehaviour
         if(c != null){
             GameObject player = c.gameObject;
             if(player != null && player.tag == "Player"){
-                Debug.Log("An trai cay");
+                // Debug.Log("An trai cay");
                 player.GetComponent<Player>().hit(health);
-                player.GetComponent<Player>().addPoint = 1.0f;
+                player.GetComponent<Player>().addPoint = addPoint;
                 if(Collected) Instantiate(Collected, transform.position, Quaternion.identity);
                 Destroy(gameObject);
             }
