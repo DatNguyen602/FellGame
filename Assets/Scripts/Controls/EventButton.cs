@@ -17,9 +17,11 @@ public class EventButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI HealthPointText;
     [SerializeField] private GameObject CameraUI;
     [SerializeField] private AudioSource BgAudio;
+    [SerializeField] private TextMeshProUGUI TextTimes;
 
     private Player PlayerCtrl;
     private float audioValue;
+    private float timeStart;
 
     void Start()
     {
@@ -27,10 +29,20 @@ public class EventButton : MonoBehaviour
         audioValue = 25;
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
         BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
+        timeStart = Time.time;
     }
 
     void Update()
     {
+        this.checkPlayer();
+        if(TextTimes != null) {
+            float timeCount = (Time.time - timeStart);
+            string timeFormat = string.Format("Time: {0:00}:{1:00} s", (int)(timeCount / 60), (int)(timeCount % 60));
+            TextTimes.text = timeFormat;
+        }
+    }
+
+    private void checkPlayer(){
         if(player != null && PlayerCtrl.isDie){
             Instantiate(desappearing,player.transform.position,Quaternion.identity);
             if(CameraUI != null){

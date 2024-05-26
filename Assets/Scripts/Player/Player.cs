@@ -162,14 +162,12 @@ public class Player : MonoBehaviour
         if(dame == 0) return;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
         healthBar.fillAmount = _health / _maxHealth;
-        // Debug.Log(_health + " / " + _maxHealth);
         at.SetTrigger("hit");
     }
 
     private void OnTriggerStay2D(Collider2D other) {
         if(other != null){
             if(other.gameObject.tag == "Ground"){
-                // Debug.Log("In ground!");
                 isJump = false;
                 isDoubleJump = false;
             }

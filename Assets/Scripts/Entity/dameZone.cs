@@ -25,6 +25,14 @@ public class dameZone : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D c){
+        if(c != null){
+            if(c.gameObject.tag == "Player"){
+                isHit = false;
+            }
+        }
+    }
+
     void OnCollisionStay2D(Collision2D c) {
         if(c != null){
             if(c.gameObject.tag == "Player"  && !isHit){
