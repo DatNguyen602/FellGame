@@ -12,12 +12,14 @@ public class EventButton : MonoBehaviour
     [SerializeField] private GameObject UIPlay;
     [SerializeField] private GameObject UIPause;
     [SerializeField] private GameObject UISetting;
+    [SerializeField] private GameObject UIDead;
     [SerializeField] private GameObject AudioSlider;
     [SerializeField] private TextMeshProUGUI AudioText;
     [SerializeField] private TextMeshProUGUI HealthPointText;
     [SerializeField] private GameObject CameraUI;
     [SerializeField] private AudioSource BgAudio;
     [SerializeField] private TextMeshProUGUI TextTimes;
+    [SerializeField] private TextMeshProUGUI showTime, showPoint;
 
     private Player PlayerCtrl;
     private float audioValue;
@@ -49,14 +51,20 @@ public class EventButton : MonoBehaviour
                 CameraUI.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
             }
             Destroy(player);
-            Invoke("LoadStartScene",2);
+            Invoke("LoadStartScene",1);
+            return;
         }
         if(player != null) HealthPointText.text = PlayerCtrl.getHealth.ToString("F2");
     }
 
     void LoadStartScene()
     {
-        SceneManager.LoadScene("StartScence");
+        UIPlay.SetActive(false);
+        UIDead.SetActive(true);
+        float timeCount = (Time.time - timeStart);
+        string timeFormat = string.Format("Time: {0:00}:{1:00} s", (int)(timeCount / 60), (int)(timeCount % 60));
+        showTime.text = timeFormat;
+        showPoint.text = string.Format("Point: {0:00}", PlayerCtrl.addPoint);
     }
 
     public void btnLeftDown(){
@@ -109,6 +117,15 @@ public class EventButton : MonoBehaviour
 
     public void btnQuitClick(){
         SceneManager.LoadScene("StartScence");
+    }
+
+    public void btnReLoadScence(string scence){
+        // try{
+            SceneManager.LoadScene(scence);
+        // } 
+        // catch(Exception ex){
+        //     SceneManager.LoadScene("StartScence");
+        // }
     }
 
     public void sliderAudioChange(){
