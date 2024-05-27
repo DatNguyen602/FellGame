@@ -14,16 +14,35 @@ public class EventButton : MonoBehaviour
     [SerializeField] private GameObject UISetting;
     [SerializeField] private GameObject UIDead;
     [SerializeField] private GameObject AudioSlider;
+    [SerializeField] private TextMeshProUGUI _countJump;
+    public TextMeshProUGUI countJump{
+        get{
+            return this._countJump;
+        }
+    }
     [SerializeField] private TextMeshProUGUI AudioText;
     [SerializeField] private TextMeshProUGUI HealthPointText;
-    [SerializeField] private GameObject CameraUI;
     [SerializeField] private AudioSource BgAudio;
+    [SerializeField] private Image _healthBar;
+    [SerializeField] private TextMeshProUGUI _pointText;
+    public Image healthBar{get{
+        return _healthBar;
+    }}
+    public TextMeshProUGUI pointText{get{
+        return _pointText;
+    }}
     [SerializeField] private TextMeshProUGUI TextTimes;
     [SerializeField] private TextMeshProUGUI showTime, showPoint;
 
     private Player PlayerCtrl;
     private float audioValue;
-    private float timeStart;
+    private float timeCount;
+
+    public static EventButton instance;
+
+    void Awake(){
+        if(instance == null) instance = this;
+    }
 
     void Start()
     {
@@ -31,14 +50,14 @@ public class EventButton : MonoBehaviour
         audioValue = 25;
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
         BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
-        timeStart = Time.time;
+        timeCount = 0;
     }
 
     void Update()
     {
+        timeCount += Time.deltaTime;
         this.checkPlayer();
         if(TextTimes != null) {
-            float timeCount = (Time.time - timeStart);
             string timeFormat = string.Format("Time: {0:00}:{1:00} s", (int)(timeCount / 60), (int)(timeCount % 60));
             TextTimes.text = timeFormat;
         }
@@ -47,21 +66,17 @@ public class EventButton : MonoBehaviour
     private void checkPlayer(){
         if(player != null && PlayerCtrl.isDie){
             Instantiate(desappearing,player.transform.position,Quaternion.identity);
-            if(CameraUI != null){
-                CameraUI.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -10);
-            }
             Destroy(player);
-            Invoke("LoadStartScene",1);
+            Invoke("ResumeScreen", 1);
             return;
         }
         if(player != null) HealthPointText.text = PlayerCtrl.getHealth.ToString("F2");
     }
 
-    void LoadStartScene()
+    public void ResumeScreen()
     {
         UIPlay.SetActive(false);
         UIDead.SetActive(true);
-        float timeCount = (Time.time - timeStart);
         string timeFormat = string.Format("Time: {0:00}:{1:00} s", (int)(timeCount / 60), (int)(timeCount % 60));
         showTime.text = timeFormat;
         showPoint.text = string.Format("Point: {0:00}", PlayerCtrl.addPoint);
@@ -120,12 +135,13 @@ public class EventButton : MonoBehaviour
     }
 
     public void btnReLoadScence(string scence){
-        // try{
+        try {
             SceneManager.LoadScene(scence);
-        // } 
-        // catch(Exception ex){
-        //     SceneManager.LoadScene("StartScence");
-        // }
+        } 
+        catch (System.Exception ex) {
+            Debug.Log(ex);
+            SceneManager.LoadScene("StartScence");
+        }
     }
 
     public void sliderAudioChange(){

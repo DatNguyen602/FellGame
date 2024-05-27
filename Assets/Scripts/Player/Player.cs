@@ -9,9 +9,6 @@ public class Player : MonoBehaviour
     private Rigidbody2D rd;
     private Animator at;
 
-    [SerializeField] private Image healthBar;
-    [SerializeField] private TextMeshProUGUI pointText;
-    [SerializeField] private ParticleSystem particleRun;
     private AudioSource jumpSound;
 
     private float _speed = 3.0f;
@@ -24,13 +21,23 @@ public class Player : MonoBehaviour
         set{
             if(value >= 0){
                 point += value;
-                pointText.text = point.ToString("F1");
+                EventButton.instance.pointText.text = point.ToString("F1");
             }
         }
     }
     private float timeInt, tMaxInt = 2.0f;
     private float _jumpPower = 4.5f;
     private bool isJump, isDoubleJump;
+    private int _doubleJumpCount;
+    public int doubleJumpCount{
+        get{
+            return _doubleJumpCount;
+        }
+        set{
+            this._doubleJumpCount += value;
+            EventButton.instance.countJump.text = string.Format("{0:00}", _doubleJumpCount);
+        }
+    }
     private Vector3 dirLook;
     private Vector3 dirMove;
     public bool isMobile{get; set;}
@@ -51,20 +58,20 @@ public class Player : MonoBehaviour
         at = GetComponent<Animator>();
         jumpSound = GetComponent<AudioSource>();
         jumpSound.Stop();
-        if(particleRun != null) particleRun.Stop();
         timeSlip = 0;
         dirLook = Vector3.right;
         isMobile = false;
         isSlip = false;
         _health = _maxHealth;
         timeInt = 0;
-        healthBar.fillAmount = _health / _maxHealth;
+        EventButton.instance.healthBar.fillAmount = _health / _maxHealth;
+        _doubleJumpCount = 1;
+        EventButton.instance.countJump.text = string.Format("{0:00}", _doubleJumpCount);
     }
 
     void Update() {
         float Horizontal = keyHorizontal();
         if(timeInt > 0) timeInt -= Time.deltaTime;
-        if(Horizontal != 0 && dirMove.x == 0 && particleRun != null) particleRun.Play();
         if(!isMobile) dirMove = new Vector3(Horizontal, 0, 0);
         if(transform.localScale.x * dirMove.x < 0) {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
@@ -76,7 +83,6 @@ public class Player : MonoBehaviour
         }
         else{
             at.SetInteger("state", 0);
-            if(particleRun != null) particleRun.Stop();
         }
 
         if(Input.GetKeyDown("space")){
@@ -121,11 +127,16 @@ public class Player : MonoBehaviour
     }
 
     public void Jump(){
-        if(!isJump || !isDoubleJump){
+        if(!isJump || (!isDoubleJump && _doubleJumpCount > 0)){
             rd.velocity = new Vector3(0,0,0);
             rd.AddForce(Vector3.up * _jumpPower, ForceMode2D.Impulse);
             jumpSound.Play();
             if(isJump) {
+                if(!isDoubleJump) {
+                    _doubleJumpCount = Mathf.Clamp(_doubleJumpCount - 1, 0, 255);
+                    EventButton.instance.countJump.text = string.Format("{0:00}", _doubleJumpCount);
+                    Debug.Log("count jump: " + _doubleJumpCount);
+                }
                 isDoubleJump = true;
                 return;
             }
@@ -153,15 +164,14 @@ public class Player : MonoBehaviour
         if(timeInt > 0) return;
         timeInt = tMaxInt;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
-        healthBar.fillAmount = _health / _maxHealth;
-        // Debug.Log(_health + " / " + _maxHealth);
+        EventButton.instance.healthBar.fillAmount = _health / _maxHealth;
         at.SetTrigger("hit");
     }
 
     public void bomHit(float dame){
         if(dame == 0) return;
         _health = Mathf.Clamp(_health + dame, 0, _maxHealth);
-        healthBar.fillAmount = _health / _maxHealth;
+        EventButton.instance.healthBar.fillAmount = _health / _maxHealth;
         at.SetTrigger("hit");
     }
 

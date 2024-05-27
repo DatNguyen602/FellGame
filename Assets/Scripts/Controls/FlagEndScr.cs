@@ -8,10 +8,12 @@ public class FlagEndScr : MonoBehaviour
     private Animator at;
 
     [SerializeField] string nextScence;
+    private bool isOn;
     // Start is called before the first frame update
     void Start()
     {
         at = GetComponent<Animator>();
+        isOn = false;
     }
 
     // Update is called once per frame
@@ -22,19 +24,20 @@ public class FlagEndScr : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D c){
         if(c!=null){
-            if(c.gameObject.tag == "Player"){
+            if(c.gameObject.tag == "Player" && !isOn){
                 this.onFlag();
+                isOn = true;
             }
         }
     }
 
     public void onFlag(){
-        at.SetBool("flag", true);
+        at.SetTrigger("flag");
         Invoke("LoadNextScene",3);
     }
 
     void LoadNextScene()
     {
-        SceneManager.LoadScene(nextScence);
+        EventButton.instance.ResumeScreen();
     }
 }
