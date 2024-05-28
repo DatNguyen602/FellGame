@@ -33,7 +33,8 @@ public class FlagEndScr : MonoBehaviour
 
     public void onFlag(){
         at.SetTrigger("flag");
-        Invoke("LoadNextScene",3);
+        Invoke("LoadNextScene",1);
+        EventButton.instance.btnNextLevel.SetActive(true);
     }
 
     void LoadNextScene()

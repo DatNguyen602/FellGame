@@ -50,22 +50,25 @@ public class Player : MonoBehaviour
     public bool isFullHealth => this._health == this._maxHealth;
     private float timeSlip, tSlipMax = 0.5f;
 
-    void Start() {
+    void Awake(){
+        _doubleJumpCount = 1;
         point = 0;
+        timeSlip = 0;
+        timeInt = 0;
+        isMobile = false;
+        isSlip = false;
         isJump = false;
         isDoubleJump = false;
+    }
+
+    void Start() {
         rd = GetComponent<Rigidbody2D>();
         at = GetComponent<Animator>();
         jumpSound = GetComponent<AudioSource>();
         jumpSound.Stop();
-        timeSlip = 0;
         dirLook = Vector3.right;
-        isMobile = false;
-        isSlip = false;
         _health = _maxHealth;
-        timeInt = 0;
         EventButton.instance.healthBar.fillAmount = _health / _maxHealth;
-        _doubleJumpCount = 1;
         EventButton.instance.countJump.text = string.Format("{0:00}", _doubleJumpCount);
     }
 
@@ -135,7 +138,7 @@ public class Player : MonoBehaviour
                 if(!isDoubleJump) {
                     _doubleJumpCount = Mathf.Clamp(_doubleJumpCount - 1, 0, 255);
                     EventButton.instance.countJump.text = string.Format("{0:00}", _doubleJumpCount);
-                    Debug.Log("count jump: " + _doubleJumpCount);
+                    // Debug.Log("count jump: " + _doubleJumpCount);
                 }
                 isDoubleJump = true;
                 return;

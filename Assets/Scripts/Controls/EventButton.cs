@@ -14,6 +14,12 @@ public class EventButton : MonoBehaviour
     [SerializeField] private GameObject UISetting;
     [SerializeField] private GameObject UIDead;
     [SerializeField] private GameObject AudioSlider;
+    [SerializeField] private GameObject _btnNextLevel;
+    public GameObject btnNextLevel{
+        get{
+            return this._btnNextLevel;
+        }
+    }
     [SerializeField] private TextMeshProUGUI _countJump;
     public TextMeshProUGUI countJump{
         get{
@@ -42,6 +48,7 @@ public class EventButton : MonoBehaviour
 
     void Awake(){
         if(instance == null) instance = this;
+        Debug.Log("Awake!");
     }
 
     void Start()
@@ -51,6 +58,7 @@ public class EventButton : MonoBehaviour
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
         BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
         timeCount = 0;
+        Debug.Log("Start!");
     }
 
     void Update()
@@ -137,6 +145,10 @@ public class EventButton : MonoBehaviour
     public void btnReLoadScence(string scence){
         try {
             SceneManager.LoadScene(scence);
+            this.UIDead.SetActive(false);
+            this.UIPause.SetActive(false);
+            this.UISetting.SetActive(false);
+            this.UIPlay.SetActive(true);
         } 
         catch (System.Exception ex) {
             Debug.Log(ex);
