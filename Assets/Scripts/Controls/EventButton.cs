@@ -48,7 +48,6 @@ public class EventButton : MonoBehaviour
 
     void Awake(){
         if(instance == null) instance = this;
-        Debug.Log("Awake!");
     }
 
     void Start()
@@ -58,7 +57,6 @@ public class EventButton : MonoBehaviour
         AudioSlider.GetComponent<Slider>().value = audioValue / 100;
         BgAudio.GetComponent<AudioSource>().volume = audioValue / 100;
         timeCount = 0;
-        Debug.Log("Start!");
     }
 
     void Update()

@@ -16,7 +16,7 @@ public class BulletScr : MonoBehaviour
 
     void Update()
     {
-        if(Mathf.Abs(transform.position.x - startPosition.x) >= 5.0f){
+        if(gameObject.activeSelf && Mathf.Abs(transform.position.x - startPosition.x) >= 5.0f){
             gameObject.SetActive(false);
             transform.position = startPosition;
         }

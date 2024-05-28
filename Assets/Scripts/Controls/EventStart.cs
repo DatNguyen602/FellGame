@@ -22,7 +22,14 @@ public class EventStart : MonoBehaviour
     }
 
     public void btnStartClick(){
-        SceneManager.LoadScene("PlayScence1");
+        StartCoroutine(LoadScence());
+    }
+
+    private System.Collections.IEnumerator LoadScence(){
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("PlayScence0");
+        while(!asyncLoad.isDone){
+            yield return null;
+        }
     }
 
     public void btnQuitClick(){
