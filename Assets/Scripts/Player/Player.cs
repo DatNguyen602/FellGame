@@ -107,6 +107,7 @@ public class Player : MonoBehaviour
 
         at.SetBool("isJump", isJump);
         at.SetBool("isSlip", isSlip);
+        if(rd.velocity.y != 0) at.SetBool("isJump", true);
      }
 
     void FixedUpdate() {
