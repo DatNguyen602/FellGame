@@ -29,6 +29,15 @@ public class PlantScr : MonoBehaviour
                 listBullet.Add(t);
             }
         }
+        else{
+            listBullet.Clear();
+            for(byte i = 0; i < sizeListBullet; i++){
+                GameObject t = Instantiate(bullet, transform.position + dirLook * startPoint, Quaternion.identity);
+                t.SetActive(false);
+                t.transform.parent = transform.parent;
+                listBullet.Add(t);
+            }
+        }
     }
 
     void Update()
@@ -54,11 +63,22 @@ public class PlantScr : MonoBehaviour
         bl?.GetComponent<Rigidbody2D>().AddForce(dirLook * 5.0f, ForceMode2D.Impulse);
     }
 
-    GameObject getBullet(){
-        foreach (GameObject item in listBullet)
-        {
-            if(!item.activeSelf) return item;
+    // GameObject getBullet(){
+    //     for (int i = 0; i < listBullet.Count; i++) {
+    //         if(!listBullet[i].activeSelf && listBullet[i] != null) return listBullet[i];
+    //         if(listBullet[i] == null) listBullet[i] = Instantiate(bullet, transform.position + dirLook * startPoint, Quaternion.identity);
+    //         listBullet[i].SetActive(false);
+    //     }
+    //     return null;
+    // }
+
+    GameObject getBullet() {
+        foreach(GameObject i in listBullet){
+            if(!i.activeSelf){
+                return i;
+            }
         }
         return null;
     }
+
 }

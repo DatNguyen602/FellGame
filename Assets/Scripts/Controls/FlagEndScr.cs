@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class FlagEndScr : MonoBehaviour
 {
@@ -16,12 +17,6 @@ public class FlagEndScr : MonoBehaviour
         isOn = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter2D(Collider2D c){
         if(c!=null){
             if(c.gameObject.tag == "Player" && !isOn){
@@ -31,9 +26,10 @@ public class FlagEndScr : MonoBehaviour
         }
     }
 
-    public void onFlag(){
+    public async void onFlag(){
         at.SetTrigger("flag");
-        Invoke("LoadNextScene",1);
+        Invoke("LoadNextScene",2);
+        await Task.Delay(2000);
         EventButton.instance.btnNextLevel.SetActive(true);
     }
 

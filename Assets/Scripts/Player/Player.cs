@@ -51,6 +51,12 @@ public class Player : MonoBehaviour
     private float timeSlip, tSlipMax = 0.5f;
 
     void Awake(){
+        rd = GetComponent<Rigidbody2D>();
+        at = GetComponent<Animator>();
+        jumpSound = GetComponent<AudioSource>();
+    }
+
+    void Start() {
         _doubleJumpCount = 1;
         point = 0;
         timeSlip = 0;
@@ -59,12 +65,6 @@ public class Player : MonoBehaviour
         isSlip = false;
         isJump = false;
         isDoubleJump = false;
-    }
-
-    void Start() {
-        rd = GetComponent<Rigidbody2D>();
-        at = GetComponent<Animator>();
-        jumpSound = GetComponent<AudioSource>();
         jumpSound.Stop();
         dirLook = Vector3.right;
         _health = _maxHealth;

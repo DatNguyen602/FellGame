@@ -2460,6 +2460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  startPoint: {fileID: 2200588068273450815}
   desappearing: {fileID: 741302293220777823, guid: db902d690febd0c44b8a24955d135994, type: 3}
   UIPlay: {fileID: 2769768139237342459}
   UIPause: {fileID: 7643412917632154500}
@@ -3870,8 +3871,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 65.6}
-  m_SizeDelta: {x: 122.8648, y: 19.2713}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: 106, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1312525602288709826
 CanvasRenderer:
@@ -4006,7 +4007,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -179, y: 226}
+  m_AnchoredPosition: {x: -180, y: 247}
   m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &491662806433029242

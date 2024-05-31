@@ -33,6 +33,8 @@ public class dameZone : MonoBehaviour
         }
     }
 
+    // Enter - Stay - Exit
+
     void OnCollisionStay2D(Collision2D c) {
         if(c != null){
             if(c.gameObject.tag == "Player"  && !isHit){
