@@ -3527,6 +3527,18 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 662469578}
+    - target: {fileID: 3682144872371256578, guid: 4774ad47013944245b1ddab5adaf883e, type: 3}
+      propertyPath: orthographic size
+      value: 6.9510465
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871855200424767185, guid: 4774ad47013944245b1ddab5adaf883e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4871855200424767185, guid: 4774ad47013944245b1ddab5adaf883e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.23
+      objectReference: {fileID: 0}
     - target: {fileID: 6010553584677742737, guid: 4774ad47013944245b1ddab5adaf883e, type: 3}
       propertyPath: m_Name
       value: ControlUI
